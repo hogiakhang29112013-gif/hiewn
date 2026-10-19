@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Chúc Mừng 20/10 Phương Hiền ❤️</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --pink: #ff6fae;
+            --rose: #ff3d84;
+            --gold: #f3e7c4;
+            --serif: "Playfair Display", Georgia, serif;
+            --sans: "Quicksand", sans-serif;
+        }
+
+        * { cursor: none !important; }
+
+        body {
+            font-family: var(--sans);
+            background: radial-gradient(circle at 50% 30%, #3a1032, #180514 85%);
+            color: #fff1f6;
+            overflow: hidden;
+            min-height: 100vh;
+            margin: 0;
+            transition: background 0.8s ease;
+        }
+
+        body.sad-mode {
+            background: radial-gradient(circle at 50% 30%, #201326, #0d040f 85%);
+        }
+
+        /* Ambient Glowing Backgrounds */
+        .glow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.35;
+            pointer-events: none;
+            z-index: 0;
+            transition: opacity 0.8s ease;
+        }
+        .g1 { width: 50vmax; height: 50vmax; background: #ff2d8a; left: -12vmax; top: -12vmax; animation: floatGlow 8s ease-in-out infinite alternate; }
+        .g2 { width: 45vmax; height: 45vmax; background: #8a2be2; right: -12vmax; bottom: -12vmax; animation: floatGlow 10s ease-in-out infinite alternate-reverse; }
+
+        body.sad-mode .glow { opacity: 0.12; }
+
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, 40px) scale(1.1); }
+        }
+
+        /* Subtle Star Twinkle */
+        .star {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            background: #fff;
+            animation: tw 3.5s infinite alternate;
+            pointer-events: none;
+            z-index: 1;
+        }
+        @keyframes tw {
+            from { opacity: 0.1; transform: scale(0.8); }
+            to { opacity: 0.9; box-shadow: 0 0 8px #fff; transform: scale(1.3); }
+        }
+
+        /* STAGE 1: Dynamic Intro Screen */
+        #stage {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.2rem;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            z-index: 30;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        #stage.hide {
+            opacity: 0;
+            transform: scale(1.08);
+            pointer-events: none;
+        }
+
+        .welcome-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 1.2rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 182, 213, 0.35);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            color: var(--gold);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 20px rgba(255, 111, 174, 0.2);
+            animation: fadeInDown 1s ease;
+        }
+
+        .welcome-title {
+            font-family: var(--serif);
+            font-size: clamp(2.2rem, 7vw, 4.2rem);
+            font-weight: 700;
+            line-height: 1.25;
+            color: #fff;
+            text-shadow: 0 4px 25px rgba(0,0,0,0.5);
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .welcome-title span {
+            background: linear-gradient(135deg, #ffd9a8, #ff6fae, #ff2d8a, #ffd9a8);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmerGradient 5s ease infinite;
+        }
+
+        @keyframes shimmerGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .welcome-desc {
+            font-size: clamp(0.95rem, 2.8vw, 1.2rem);
+            color: rgba(255, 241, 246, 0.85);
+            max-width: 460px;
+            line-height: 1.6;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .open-btn {
+            position: relative;
+            margin-top: 1rem;
+            padding: 0.9rem 2.5rem;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #ff5c97, #ff2d8a);
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 30px rgba(255, 45, 138, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s cubic-bezier(0.2, 1.3, 0.3, 1);
+            animation: fadeInUp 1s ease 0.6s both, pulseBtn 2s infinite 1.6s;
+            cursor: none;
+            overflow: hidden;
+        }
+        
+        .open-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(60deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(30deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(30deg); }
+            20%, 100% { transform: translateX(100%) rotate(30deg); }
+        }
+
+        @keyframes pulseBtn {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); box-shadow: 0 15px 40px rgba(255, 45, 138, 0.65); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* STAGE 2: Glassmorphism Card Style */
+        #card {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            z-index: 20;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+            overflow-y: auto;
+        }
+        #card.show { opacity: 1; pointer-events: auto; }
+
+        .box {
+            position: relative;
+            max-width: 460px;
+            width: 100%;
+            text-align: center;
+            padding: 2rem 1.5rem;
+            border-radius: 28px;
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+            border: 1px solid rgba(255, 182, 213, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4), inset 0 0 30px rgba(255, 150, 200, 0.05);
+            transform: scale(0.9) translateY(20px);
+            transition: transform 1s cubic-bezier(0.2, 1.2, 0.3, 1);
+        }
+        #card.show .box { transform: none; }
+
+        /* Sad Shake Animation for Card Box */
+        .box.shake {
+            animation: sadShake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        @keyframes sadShake {
+            10%, 90% { transform: translate3d(-2px, 0, 0) rotate(-1deg); }
+            20%, 80% { transform: translate3d(3px, 0, 0) rotate(1deg); }
+            30%, 50%, 70% { transform: translate3d(-5px, 0, 0) rotate(-1.5deg); }
+            40%, 60% { transform: translate3d(5px, 0, 0) rotate(1.5deg); }
+        }
+
+        .t2 {
+            font-family: var(--serif);
+            font-size: clamp(1.8rem, 7vw, 2.4rem);
+            font-weight: 700;
+            background: linear-gradient(90deg, #ff9ec8, #fff, #ffd9a8, #ff6fae);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: sh 6s linear infinite;
+        }
+        @keyframes sh { to { background-position: -200% 0; } }
+
+        .quote { font-family: var(--serif); font-style: italic; font-size: 0.95rem; color: var(--gold); opacity: 0; transition: opacity 1s; line-height: 1.4; }
+        .sign { font-size: 0.85rem; color: var(--pink); opacity: 0; transition: opacity 1s; margin-top: 0.4rem; font-weight: 600; }
+        .on2 { opacity: 1; }
+
+        /* Floating Hearts & Sad Elements Animations */
+        .heart, .sad-item {
+            position: fixed;
+            bottom: -50px;
+            z-index: 2;
+            pointer-events: none;
+            animation: up linear forwards;
+            filter: drop-shadow(0 0 6px rgba(255, 61, 132, 0.6));
+        }
+        .sad-item {
+            top: -50px;
+            bottom: auto;
+            animation: fallRain linear forwards;
+            filter: drop-shadow(0 0 8px rgba(138, 180, 248, 0.5));
+        }
+        @keyframes up {
+            to { transform: translate(var(--dx), -115vh) rotate(var(--rot)); opacity: 0; }
+        }
+        @keyframes fallRain {
+            to { transform: translate(var(--dx), 115vh) rotate(var(--rot)); opacity: 0; }
+        }
+
+        .burst {
+            position: fixed;
+            z-index: 99;
+            pointer-events: none;
+            animation: bst 0.8s ease-out forwards;
+        }
+        @keyframes bst {
+            to { transform: translate(var(--bx), var(--by)) scale(0.2); opacity: 0; }
+        }
+
+        /* Custom Heart Cursor & Trail */
+        #cur {
+            position: fixed; left: 0; top: 0; z-index: 999; pointer-events: none;
+            font-size: 22px; color: #ff3d84; text-shadow: 0 0 10px #ff3d84;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        #cur span { display: inline-block; animation: beat 1.2s infinite; }
+        @keyframes beat { 15% { transform: scale(1.2); } 30% { transform: scale(1); } 45% { transform: scale(1.15); } }
+
+        .trail {
+            position: fixed; z-index: 998; pointer-events: none; color: #ff6fae;
+            transform: translate(-50%, -50%); animation: tr 0.9s ease-out forwards;
+            text-shadow: 0 0 6px rgba(255, 61, 132, 0.6);
+        }
+        @keyframes tr {
+            to { transform: translate(calc(-50% + var(--tx)), -70px) scale(0.3); opacity: 0; }
+        }
+
+        .dodge-btn { transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Background Lighting -->
+    <div class="glow g1"></div>
+    <div class="glow g2"></div>
+
+    <!-- Music Control Floating Button -->
+    <button id="music-toggle" onclick="toggleMusic()" class="fixed top-5 right-5 z-50 bg-white/10 backdrop-blur-md p-3 rounded-full text-pink-200 shadow-lg hover:bg-white/25 transition duration-300 flex items-center justify-center w-11 h-11 border border-white/20">
+        <i id="music-icon" class="fas fa-music text-base"></i>
+    </button>
+
+    <!-- STAGE 1: Modern Welcome Screen -->
+    <div id="stage">
+        <div class="welcome-badge">
+            <i class="fas fa-sparkles text-amber-200"></i> 20 · 10 SPECIAL GIFT
+        </div>
+        <h1 class="welcome-title">
+            Gửi tặng <span>Phương Hiền</span>
+        </h1>
+        <p class="welcome-desc">
+            Một món quà nhỏ mang theo sự trân trọng và những lời chúc tốt đẹp nhất dành riêng cho cậu ngày hôm nay! ✨
+        </p>
+        <button id="btn" class="open-btn" onclick="startExperience()">
+            Khám phá ngay 🎁
+        </button>
+    </div>
+
+    <!-- STAGE 2: Interactive Celebration Card -->
+    <div id="card">
+        <div class="box" id="card-box">
+            <span class="inline-block px-3.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider text-pink-950 bg-gradient-to-r from-amber-200 to-pink-300 shadow-sm mb-2">
+                Chúc Mừng Ngày Phụ Nữ Việt Nam 20/10
+            </span>
+            <div class="text-3xl my-1">🌸 💖 🌸</div>
+            <h2 class="t2 font-bold my-1" id="name">PHƯƠNG HIỀN</h2>
+            
+            <div class="flex justify-center items-center gap-2 text-pink-400/70 my-2">
+                <span class="h-[1px] w-10 bg-gradient-to-r from-transparent to-pink-400"></span>
+                <span>✦</span>
+                <span class="h-[1px] w-10 bg-gradient-to-l from-transparent to-pink-400"></span>
+            </div>
+
+            <!-- Single Consolidated Wishes Text -->
+            <div id="msg" class="text-xs sm:text-sm font-normal leading-relaxed my-4 text-pink-100 min-h-[5em] px-2 text-center"></div>
+            
+            <div class="quote mt-2" id="quote"></div>
+            <div class="sign mb-3" id="sign"></div>
+
+            <!-- Interactive Question Box -->
+            <div id="question-box" class="pt-3 border-t border-white/10 mt-2">
+                <p id="question-text" class="text-white text-xs sm:text-sm font-medium mb-2.5 transition-colors duration-300">Phương Hiền nhận món quà này của mình nha! 🥰</p>
+                <div class="flex flex-col sm:flex-row gap-2 justify-center items-center relative min-h-[40px]">
+                    <button id="btn-yes" onclick="acceptGift()" class="w-full sm:w-auto px-5 py-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold rounded-xl shadow-md hover:scale-105 transition-all text-xs sm:text-sm">
+                        Đồng ý luôn nè! ❤️
+                    </button>
+                    <button id="btn-no" onmouseover="dodgeButton()" onclick="dodgeButton()" class="dodge-btn w-full sm:w-auto px-5 py-2 bg-white/10 text-pink-100 font-medium rounded-xl border border-white/20 text-xs sm:text-sm">
+                        Từ từ đã 🙈
+                    </button>
+                </div>
+            </div>
+
+            <!-- Final Thank You Banner -->
+            <div id="final-thanks" class="hidden pt-3 border-t border-white/10 mt-2">
+                <p class="text-amber-200 font-semibold text-xs sm:text-sm">🎉 Cảm Ơn Hiền Nhé! 🎉</p>
+                <p class="text-[11px] text-pink-200/90 mt-1">Chúc Phương Hiền có một ngày 20/10 thật nhiều niềm vui, luôn xinh đẹp, tự tin và tỏa sáng rực rỡ!</p>
+            </div>
+
+            <div class="text-[10px] text-pink-300/50 mt-3 tracking-wide">
+                Chạm vào màn hình bất kỳ đâu để thả tim ♡
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Audio -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://assets.mixkit.co/music/preview/mixkit-romantic-sunset-688.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const CFG = {
+            name: "PHƯƠNG HIỀN",
+            intro: "Chúc Phương Hiền một ngày 20/10 thật ngọt ngào và trọn vẹn niềm vui! Mong rằng Hiền sẽ luôn giữ được năng lượng tích cực, sự tự tin và nụ cười rạng rỡ trên môi, tỏa sáng theo cách riêng của mình, đạt được mọi mục tiêu đề ra và luôn gặp thật nhiều may mắn, bình an trong cuộc sống. 🌸✨",
+            quote: "“Cảm ơn vì sự hiện diện dễ thương của cậu, chúc mọi điều tốt đẹp nhất luôn đồng hành cùng Hiền.”",
+            sign: "— Gửi tặng Phương Hiền với tất cả sự trân trọng! 💐"
+        };
+
+        const rnd = (arr) => arr[Math.floor(Math.random() * arr.length)];
+        const R = (a, b) => Math.random() * (b - a) + a;
+        const $ = (id) => document.getElementById(id);
+
+        let isPlaying = false;
+        const bgMusic = $('bg-music');
+        const musicIcon = $('music-icon');
+
+        function toggleMusic() {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicIcon.classList.remove('fa-volume-high');
+                musicIcon.classList.add('fa-music');
+            } else {
+                bgMusic.play().then(() => {
+                    musicIcon.classList.remove('fa-music');
+                    musicIcon.classList.add('fa-volume-high');
+                }).catch(e => console.log('Audio autoplay prevented:', e));
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Generate Twinkle Stars Background
+        for (let i = 0; i < 55; i++) {
+            const s = document.createElement("div");
+            s.className = "star";
+            s.style.cssText = `left:${R(0, 100)}vw;top:${R(0, 100)}vh;animation-delay:${R(0, 3)}s`;
+            document.body.appendChild(s);
+        }
+
+        // Initialize Card Content
+        $("name").textContent = CFG.name;
+        $("sign").textContent = CFG.sign;
+        $("quote").textContent = CFG.quote;
+
+        // Start Experience Interaction
+        function startExperience() {
+            if (!isPlaying) toggleMusic();
+            $("stage").classList.add("hide");
+            $("card").classList.add("show");
+            
+            // Trigger effects
+            setInterval(createHeart, 350);
+            heartStorm();
+
+            // Typing effect for introduction message
+            let i = 0;
+            setTimeout(function type() {
+                $("msg").textContent = CFG.intro.slice(0, ++i);
+                if (i < CFG.intro.length) {
+                    setTimeout(type, 25);
+                } else {
+                    setTimeout(() => $("quote").classList.add("on2"), 800);
+                    setTimeout(() => $("sign").classList.add("on2"), 1400);
+                }
+            }, 500);
+        }
+
+        // Heart Animations
+        const HEARTS = ["❤", "💖", "💗", "💕", "🌸", "🌹", "✨"];
+        function createHeart() {
+            const h = document.createElement("div");
+            h.className = "heart";
+            h.textContent = rnd(HEARTS);
+            const duration = R(6, 12);
+            h.style.cssText = `left:${R(0, 100)}vw;font-size:${R(14, 32)}px;animation-duration:${duration}s;--dx:${R(-60, 60)}px;--rot:${R(-30, 30)}deg;opacity:${R(0.5, 0.9)}`;
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), duration * 1000);
+        }
+
+        function heartStorm() {
+            for (let i = 0; i < 25; i++) setTimeout(createHeart, i * 80);
+        }
+
+        // SAD EFFECT IMPLEMENTATION 🥺🌧️
+        const SAD_ICONS = ["🥺", "😢", "💧", "💔", "🌧️", "😭", "🥀"];
+        function createSadRain() {
+            const s = document.createElement("div");
+            s.className = "sad-item";
+            s.textContent = rnd(SAD_ICONS);
+            const duration = R(2.5, 5);
+            s.style.cssText = `left:${R(0, 100)}vw;font-size:${R(18, 36)}px;animation-duration:${duration}s;--dx:${R(-40, 40)}px;--rot:${R(-20, 20)}deg;opacity:${R(0.7, 1)}`;
+            document.body.appendChild(s);
+            setTimeout(() => s.remove(), duration * 1000);
+        }
+
+        function triggerSadEffect() {
+            // Darken screen background temporarily
+            document.body.classList.add("sad-mode");
+            setTimeout(() => document.body.classList.remove("sad-mode"), 2000);
+
+            // Shake card box
+            const box = $("card-box");
+            box.classList.remove("shake");
+            void box.offsetWidth; // Trigger reflow
+            box.classList.add("shake");
+
+            // Spawn sad rain
+            for (let i = 0; i < 15; i++) {
+                setTimeout(createSadRain, i * 80);
+            }
+        }
+
+        let dodgeCount = 0;
+        function dodgeButton() {
+            const btnNo = $("btn-no");
+            const randomX = (Math.random() * 120) - 60;
+            const randomY = (Math.random() * 60) - 30;
+            btnNo.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            
+            dodgeCount++;
+            triggerSadEffect();
+
+            const questionText = $("question-text");
+            if (dodgeCount === 1) {
+                btnNo.innerText = "Sao lại từ từ... 🥺";
+                questionText.textContent = "Hiền làm mình hơi buồn đó nha... 😢";
+            } else if (dodgeCount === 3) {
+                btnNo.innerText = "Thật sự từ từ sao? 💔";
+                questionText.textContent = "Bấm nút hồng bên trên đi mà! 🥺❤️";
+            } else if (dodgeCount >= 5) {
+                btnNo.innerText = "Nút này trốn mất rồi 🙈";
+                questionText.textContent = "Nhận món quà dễ thương này đi nào! 🥰";
+            }
+        }
+
+        function burst(x, y, ch, size) {
+            const b = document.createElement("div");
+            b.className = "burst";
+            b.textContent = ch;
+            b.style.cssText = `left:${x}px;top:${y}px;font-size:${size + R(0, 8)}px;color:#ffc2dc;--bx:${R(-60, 60)}px;--by:${R(-60, 60)}px`;
+            document.body.appendChild(b);
+            setTimeout(() => b.remove(), 800);
+        }
+
+        // Accept Gift Action
+        function acceptGift() {
+            document.body.classList.remove("sad-mode");
+            $("question-box").classList.add("hidden");
+            $("final-thanks").classList.remove("hidden");
+            heartStorm();
+
+            confetti({
+                particleCount: 140,
+                spread: 100,
+                origin: { y: 0.6 }
+            });
+        }
+
+        // Custom Mouse/Touch Cursor Heart Trail Effect
+        const cur = document.createElement("div");
+        cur.id = "cur";
+        cur.innerHTML = "<span>❤</span>";
+        document.body.appendChild(cur);
+        let lastTrailTime = 0;
+
+        addEventListener("pointermove", (e) => {
+            cur.style.transform = `translate(${e.clientX}px,${e.clientY}px) translate(-50%,-50%)`;
+            cur.style.opacity = 1;
+            const now = performance.now();
+            if (now - lastTrailTime < 50) return;
+            lastTrailTime = now;
+
+            const t = document.createElement("div");
+            t.className = "trail";
+            t.textContent = rnd(["❤", "💖", "✨"]);
+            t.style.cssText = `left:${e.clientX}px;top:${e.clientY}px;font-size:${R(10, 16)}px;--tx:${R(-25, 25)}px`;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 900);
+        });
+
+        document.addEventListener("mouseleave", () => (cur.style.opacity = 0));
+
+        // Click anywhere on card to spawn small heart burst
+        $("card").addEventListener("click", (e) => {
+            if (e.target.tagName !== "BUTTON") {
+                for (let i = 0; i < 5; i++) burst(e.clientX, e.clientY, rnd(HEARTS), 16);
+            }
+        });
+    </script>
+</body>
+</html>
